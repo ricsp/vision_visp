@@ -71,7 +71,10 @@ vpCameraParameters toVispCameraParameters(const sensor_msgs::CameraInfo& cam_inf
       const double& py = cam_info.K[1 * 3 + 1];
       const double& u0 = cam_info.K[0 * 3 + 2];
       const double& v0 = cam_info.K[1 * 3 + 2];
-      cam.initPersProjWithoutDistortion(px, py, u0, v0);
+      const unsigned int bin_x = cam_info.binning_x > 0 ? cam_info.binning_x : 1;
+      const unsigned int bin_y = cam_info.binning_y > 0 ? cam_info.binning_y : 1;
+      // TODO: consider ROI
+      cam.initPersProjWithoutDistortion(px/bin_x, py/bin_y, u0/bin_x, v0/bin_y);
       return cam;
     }
 
@@ -81,7 +84,10 @@ vpCameraParameters toVispCameraParameters(const sensor_msgs::CameraInfo& cam_inf
       const double& py = cam_info.P[1 * 4 + 1];
       const double& u0 = cam_info.P[0 * 4 + 2];
       const double& v0 = cam_info.P[1 * 4 + 2];
-      cam.initPersProjWithoutDistortion(px, py, u0, v0);
+      const unsigned int bin_x = cam_info.binning_x > 0 ? cam_info.binning_x : 1;
+      const unsigned int bin_y = cam_info.binning_y > 0 ? cam_info.binning_y : 1;
+      // TODO: consider ROI
+      cam.initPersProjWithoutDistortion(px/bin_x, py/bin_y, u0/bin_x, v0/bin_y);
       //cam.initPersProjWithDistortion(px, py, u0, v0, -cam_info.D[0], cam_info.D[0]);
       return cam;
     }
